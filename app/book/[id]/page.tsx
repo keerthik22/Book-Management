@@ -6,10 +6,20 @@ import { useRouter } from 'next/navigation';
 import { Book } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
+// import { Progress } from '@/components/ui/progress'; // Temporarily commented out
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ArrowLeft, BookOpen, CheckCircle, Clock, Plus, Minus } from 'lucide-react';
+
+// Temporary inline Progress component
+const TempProgress = ({ value, className }: { value: number; className?: string }) => (
+  <div className={`w-full bg-gray-200 rounded-full h-3 ${className}`}>
+    <div 
+      className="bg-blue-600 h-3 rounded-full transition-all duration-300"
+      style={{ width: `${Math.min(100, Math.max(0, value))}%` }}
+    />
+  </div>
+);
 
 interface BookPageProps {
   params: { id: string };
@@ -30,7 +40,7 @@ export default function BookPage({ params }: BookPageProps) {
     }
 
     fetchBook();
-  }, [params.id]);
+  }, [router]);
 
   const fetchBook = async () => {
     try {
@@ -144,7 +154,7 @@ export default function BookPage({ params }: BookPageProps) {
         <div className="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-12 shadow-lg border border-gray-100">
           <BookOpen className="w-16 h-16 text-gray-400 mx-auto mb-6" />
           <h2 className="text-2xl font-semibold text-gray-900 mb-4">Book not found</h2>
-          <p className="text-gray-600 mb-6">The book you're looking for doesn't exist or has been removed.</p>
+          <p className="text-gray-600 mb-6">The book you&apos;re looking for doesn&apos;t exist or has been removed.</p>
           <Button 
             onClick={() => router.push('/dashboard')}
             className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
@@ -249,7 +259,7 @@ export default function BookPage({ params }: BookPageProps) {
                     <span className="text-sm font-medium text-gray-700">Reading Progress</span>
                     <span className="text-lg font-bold text-blue-600">{progress}%</span>
                   </div>
-                  <Progress 
+                  <TempProgress 
                     value={progress} 
                     className="h-3 bg-gray-200"
                   />

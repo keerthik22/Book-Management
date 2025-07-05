@@ -19,9 +19,17 @@ export default function DashboardPage() {
   const [editingBook, setEditingBook] = useState<Book | undefined>();
   const [user, setUser] = useState<any>(null);
   const [filter, setFilter] = useState<'all' | 'completed' | 'in-progress'>('all');
+  const [isClient, setIsClient] = useState(false);
   const router = useRouter();
 
+ useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   useEffect(() => {
+    // Only run this effect on the client side
+    if (!isClient) return;
+    
     const userId = localStorage.getItem('userId');
     if (!userId) {
       router.push('/login');
@@ -30,7 +38,7 @@ export default function DashboardPage() {
 
     fetchBooks();
     fetchUser();
-  }, []);
+  }, [router, isClient]);
 
   useEffect(() => {
     let filtered = books.filter(book =>
